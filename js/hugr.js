@@ -4,6 +4,9 @@ class ContentSplitter {
     this.point = 0;
     this.btn = document.querySelector('.manager__js-btn');
     this.hammer = new Hammer(this.btn);
+    this.leftLogo  = document.querySelector('.logo__image_left');
+    this.rightLogo = document.querySelector('.logo__image_right');
+
     this.init();
   }
 
@@ -54,11 +57,14 @@ class ContentSplitter {
     document.querySelector('.manager__divider').style.left = `calc(50% + ${point}px)`;
     document.querySelector('.content__left').style.width = `calc(50% + ${point}px)`;
     document.querySelector('.content__right').style.width = `calc(50% - ${point}px)`;
+    const ratio = point / (window.innerWidth / 2);
+    const shift = (window.innerWidth / 2) * 0.1;
+    this.leftLogo.style.transform  = `translateX(${ratio * shift}px)`;
+    this.rightLogo.style.transform = `translateX(${-ratio * shift}px)`;
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => new ContentSplitter());
-
 
 // hat.js ➔ ES6 OOP, Vanilla JS
 class LogoController {
