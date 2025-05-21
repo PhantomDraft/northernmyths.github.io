@@ -4,8 +4,8 @@ class ContentSplitter {
     this.point = 0;
     this.btn = document.querySelector('.manager__js-btn');
     this.hammer = new Hammer(this.btn);
-    this.leftLogo  = document.querySelector('.logo__image_left');
-    this.rightLogo = document.querySelector('.logo__image_right');
+    this.leftLogo  = document.querySelector('.logo__images__left .logo__image');
+    this.rightLogo = document.querySelector('.logo__images__right .logo__image');
 
     this.init();
   }
@@ -59,11 +59,9 @@ class ContentSplitter {
     document.querySelector('.content__right').style.width = `calc(50% - ${point}px)`;
     const ratio = point / (window.innerWidth / 2);
     const shift = (window.innerWidth / 2) * 0.1;
-    this.leftLogo.style.transform  = `translateX(${ratio * shift}px)`;
-    this.rightLogo.style.transform = `translateX(${-ratio * shift}px)`;
-    // English comment: Sync logo opacity with content visibility
-    this.leftLogo.style.opacity  = (50 + percent) / 100;
-    this.rightLogo.style.opacity = (50 - percent) / 100;
+    // English comment: sync logo halves with content visibility
+    this.leftLogo.style.opacity  = percent / 100;
+    this.rightLogo.style.opacity = (100 - percent) / 100;
   }
 }
 
