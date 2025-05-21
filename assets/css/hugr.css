@@ -3,20 +3,20 @@
 	Theme URI: localhost
 	Author: PD
 	Author URI: https://github.com/PhantomDraft
-	Version: 4.6
+	Version: 4.7
 */
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,700&family=Ruslan+Display&display=swap');
 
 /* Deutsch Gothic */
 @font-face {
 	font-style: normal; font-weight: normal;
-	src: url('/font/DeutschGothic/DeutschGothic.eot?v=1.0.0');
+	src: url('./font/DeutschGothic/DeutschGothic.eot?v=1.0.0');
 	src: 
-		url('/font/DeutschGothic/DeutschGothic.eot?#iefix&v=1.0.0') format('embedded-opentype'),
-		url('/font/DeutschGothic/DeutschGothic.woff2?v=1.0.0') format('woff2'),
-		url('/font/DeutschGothic/DeutschGothic.woff?v=1.0.0') format('woff'),
-		url('/font/DeutschGothic/DeutschGothic.ttf?v=1.0.0') format('truetype'),
-		url('/font/DeutschGothic/DeutschGothic.svg?v=1.0.0#fontawesomeregular') format('svg');
+		url('./font/DeutschGothic/DeutschGothic.eot?#iefix&v=1.0.0') format('embedded-opentype'),
+		url('./font/DeutschGothic/DeutschGothic.woff2?v=1.0.0') format('woff2'),
+		url('./font/DeutschGothic/DeutschGothic.woff?v=1.0.0') format('woff'),
+		url('./font/DeutschGothic/DeutschGothic.ttf?v=1.0.0') format('truetype'),
+		url('./font/DeutschGothic/DeutschGothic.svg?v=1.0.0#fontawesomeregular') format('svg');
 	font-family: 'Deutsch Gothic'
 }
 
@@ -297,7 +297,9 @@ img {
 .logo__image {
 	margin-left: 7px;
 	height: 50vh;
-	display: inline-block
+	display: inline-block;
+    /* English comment: smooth opacity transition */
+    transition: opacity 0.3s
 }
 
 /* Cont

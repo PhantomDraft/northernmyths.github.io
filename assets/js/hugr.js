@@ -61,6 +61,9 @@ class ContentSplitter {
     const shift = (window.innerWidth / 2) * 0.1;
     this.leftLogo.style.transform  = `translateX(${ratio * shift}px)`;
     this.rightLogo.style.transform = `translateX(${-ratio * shift}px)`;
+    // English comment: Sync logo opacity with content visibility
+    this.leftLogo.style.opacity  = (50 + percent) / 100;
+    this.rightLogo.style.opacity = (50 - percent) / 100;
   }
 }
 
@@ -70,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => new ContentSplitter());
 class LogoController {
   constructor() {
     this.minSize = 50;
-    this.el = document.querySelector('.logo__image');
+    this.el = document.querySelector('.logo__images');
     this.page = document.documentElement;
     this.height = {
       el: this.el.offsetHeight - this.minSize,
