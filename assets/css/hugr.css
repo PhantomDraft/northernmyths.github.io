@@ -290,15 +290,39 @@ img {
 	display: inline-block
 }
 
-.logo__image {
-    margin-left: 7px;
-    height: 50vh;
-    display: block;
+/* Wrapper для двух «половинок» логотипа */
+.logo__images {
+    position: relative;      /* контейнер для абсолютных IMG */
+    width: 100%;
+    height: 50vh;            /* та же высота, что и у изображений */
+    overflow: hidden;        /* аналогично .content__left/.content__right */
 }
 
-.logo__images {
-    display: block;      /* гарантируем блочное поведение */
-    overflow: hidden;    /* содержимое будет «обрезаться» по opacity/transform */
+/* Левая «часть» логотипа */
+.logo__images__left {
+    position: relative;
+    float: left;             /* аналогично .content__left */
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Правая «часть» логотипа */
+.logo__images__right {
+    position: relative;
+    float: right;            /* аналогично .content__right */
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Само изображение: абсолютное, по центру контейнера, высота 100% */
+.logo__image {
+    position: absolute;      /* English comment: absolute positioning for centering */
+    top: 0;                  /* English comment: align to top */
+    left: 50%;               /* English comment: center horizontally */
+    transform: translateX(-50%); /* English comment: exact horizontal center */
+    height: 100%;            /* English comment: full wrapper height */
 }
 
 /* Cont
