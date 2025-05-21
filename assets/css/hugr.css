@@ -1,9 +1,9 @@
 /*
-	Theme Name: Hel
-	Theme URI: localhost
+	Theme Name: Til Hel
+	Theme URI: https://northernmyths.phantom-draft.com/
 	Author: PD
 	Author URI: https://github.com/PhantomDraft
-	Version: 4.7
+	Version: 5.2
 */
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,700&family=Ruslan+Display&display=swap');
 
@@ -290,138 +290,33 @@ img {
 	display: inline-block
 }
 
-/* Wrapper для двух «половинок» логотипа */
-.logo__images {
-    position: relative;      /* контейнер для абсолютных IMG */
-    width: 100%;
-    height: 50vh;            /* та же высота, что и у изображений */
-    overflow: hidden;        /* аналогично .content__left/.content__right */
-}
-
-/* Левая «часть» логотипа */
-.logo__images__left {
-    position: relative;
-    float: left;             /* аналогично .content__left */
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-}
-
-/* Правая «часть» логотипа */
-.logo__images__right {
-    position: relative;
-    float: right;            /* аналогично .content__right */
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-}
-
-/* Само изображение: абсолютное, по центру контейнера, высота 100% */
-.logo__image {
-    position: absolute;      /* English comment: absolute positioning for centering */
-    top: 0;                  /* English comment: align to top */
-    left: 50%;               /* English comment: center horizontally */
-    transform: translateX(-50%); /* English comment: exact horizontal center */
-    height: 100%;            /* English comment: full wrapper height */
-}
-
-/* Cont
- */
-.content {
+.logo__images { /* Wrapper */
 	overflow: hidden;
-	box-sizing: border-box;
-	position: relative;
-	z-index: 3
+	height: 50vh;
+	width: 100%;
+    position: relative
 }
 
-.content img {
-	border-radius: 12px
+.logo__images__left {
+	overflow: hidden;
+	height: 100%;
+	width: 50%;
+    float: left
 }
 
-.content__page {
-	hyphens: auto;
-	-ms-hyphens: auto;
-	-webkit-hyphens: auto;
-	margin: auto;
-	position: relative;
-	z-index: 3
+.logo__images__right {
+	overflow: hidden;
+	height: 100%;
+	width: 50%;
+    float: right
 }
 
-.content__page > *:not(ul):not(ol):not(h2):not(h3):not(.info):not(.atcScreen) {
-	color: #d3d3d3; line-height: 200%; font-size: 130%; font-family: 'PT Serif', serif;
-	margin: 0 3vw 3vh
-}
-
-@media (max-width: 1101px) {
-	.content__page {
-		width: 65vw
-	}
-}
-
-@media (min-width: 1100px) {
-	.content__page {
-		width: 58vw
-	}
-}
-
-.content__page h2,
-.content__page h3,
-.content__page a,
-.content__page ul,
-.content__page ol,
-.atcScreen {
-	color: #dcdcdc
-}
-
-.content__page h2,
-.content__page h3 {
-	font-family: 'PT Serif', serif; text-align: center;
-	padding: 0; margin: 60px 0 30px
-}
-
-.content__page h2 {
-	font-size: 240%
-}
-
-.content__page h2:first-letter,
-.content__page h3:first-letter {
-	color: red; font-family: 'Deutsch Gothic'
-}
-
-.content__page h2:first-letter {
-	font-size: 245%
-}
-
-.content__page h3 {
-	font-size: 220%
-}
-
-.content__page h3:first-letter {
-	font-size: 245%
-}
-
-.content__page ul,
-.content__page ol,
-.atcScreen {
-	line-height: 200%; font-size: 110%; font-style: italic; font-family: 'PT Serif', serif
-}
-
-.content__page ul,
-.content__page ol {
-	padding: 0 10%
-}
-
-.atcScreen {
-	margin-top: 30px; margin-right: auto; margin-bottom: 30px; margin-left: auto;
-	width: 80%
-}
-
-.atcScreen + .atcScreen {
-	margin-top: 60px
-}
-
-.atcScreen p {
-	margin: 4vh 0 0
+.logo__image {
+	transform: translateX(-50%);
+	left: 50%;
+	top: 0;
+	height: 100%;
+    position: absolute
 }
 
 /* Main
@@ -507,17 +402,17 @@ img {
     margin: 3vh 0
 }
 
-.line-wrap h3,
+.line-wrap h2,
 .line-wrap p:not(.info) {
 	font-weight: bold; font-family: 'PT Serif', serif
 }
 
-.line-wrap h3:first-letter {
+.line-wrap h2:first-letter {
 	color: red; font-family: 'Deutsch Gothic'
 }
 
 @media (max-width: 1101px) {
-	.line-wrap h3 {
+	.line-wrap h2 {
 		font-size: 4vh
 	}
 
@@ -527,7 +422,7 @@ img {
 }
 
 @media (min-width: 1100px) {
-	.line-wrap h3 {
+	.line-wrap h2 {
 		font-size: 6vh
 	}
 
@@ -542,6 +437,112 @@ img {
 
 .content .info {
 	margin: 2vh 0
+}
+
+/* Cont
+ */
+.content {
+	overflow: hidden;
+	box-sizing: border-box;
+	position: relative;
+	z-index: 3
+}
+
+.content img {
+	border-radius: 12px
+}
+
+.content__page {
+	hyphens: auto;
+	-ms-hyphens: auto;
+	-webkit-hyphens: auto;
+	margin: auto;
+	position: relative;
+	z-index: 3
+}
+
+.content__page > *:not(ul):not(ol):not(h1):not(h2):not(h3):not(.info):not(.atcScreen) {
+	color: #d3d3d3; line-height: 200%; font-size: 130%; font-family: 'PT Serif', serif;
+	margin: 0 3vw 3vh
+}
+
+@media (max-width: 1101px) {
+	.content__page {
+		width: 65vw
+	}
+}
+
+@media (min-width: 1100px) {
+	.content__page {
+		width: 58vw
+	}
+}
+
+.content__page h1,
+.content__page h2,
+.content__page h3,
+.content__page a,
+.content__page ul,
+.content__page ol,
+.atcScreen {
+	color: #dcdcdc
+}
+
+.content__page h1,
+.content__page h2,
+.content__page h3 {
+	font-family: 'PT Serif', serif; text-align: center;
+	padding: 0; margin: 60px 0 30px
+}
+
+.content__page h1 {
+	font-size: 280%
+}
+
+.content__page h2 {
+	font-size: 240%
+}
+
+.content__page h1:first-letter,
+.content__page h2:first-letter,
+.content__page h3:first-letter {
+	color: red; font-family: 'Deutsch Gothic'
+}
+
+.content__page h2:first-letter {
+	font-size: 245%
+}
+
+.content__page h3 {
+	font-size: 220%
+}
+
+.content__page h3:first-letter {
+	font-size: 245%
+}
+
+.content__page ul,
+.content__page ol,
+.atcScreen {
+	line-height: 200%; font-size: 110%; font-style: italic; font-family: 'PT Serif', serif
+}
+
+.content__page ul,
+.content__page ol {
+	padding: 0 10%
+}
+
+.atcScreen {
+	margin-top: 30px; margin-right: auto; margin-bottom: 30px; margin-left: auto;
+	width: 80%
+}
+
+.atcScreen + .atcScreen {
+	margin-top: 60px
+}
+
+.atcScreen p {
+	margin: 4vh 0 0
 }
 
 /* Shoes
@@ -567,7 +568,7 @@ img {
 	}
 }
 
-.shoes h1 {
+.shoes h3 {
 	font-size: 3vh; font-family: 'PT Serif', serif;
 	padding: 0 10px 0 0; margin: 0;
 	float: right
@@ -581,7 +582,7 @@ img {
 }
 
 @media (max-width: 1101px) {
-	.shoes h1 {
+	.shoes h3 {
 		max-width: 100%
 	}
 	.shoes p {
@@ -590,7 +591,7 @@ img {
 }
 
 @media (min-width: 1100px) {
-	.shoes h1 {
+	.shoes h3 {
 		max-width: 50%
 	}
 	.shoes p {

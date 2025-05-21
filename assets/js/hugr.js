@@ -62,7 +62,7 @@ class ContentSplitter {
     document.querySelector('.content__right').style.width = `calc(50% - ${point}px)`;
     const ratio = point / (window.innerWidth / 2);
     const shift = (window.innerWidth / 2) * 0.1;
-    // English comment: sync logo halves with content visibility
+    // sync logo halves with content visibility
     this.leftLogoContainer.style.width  = percent + '%';
     this.rightLogoContainer.style.width = (100 - percent) + '%';
   }
