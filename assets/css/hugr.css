@@ -10,13 +10,13 @@
 /* Deutsch Gothic */
 @font-face {
 	font-style: normal; font-weight: normal;
-	src: url('./font/DeutschGothic/DeutschGothic.eot?v=1.0.0');
+	src: url('../font/DeutschGothic/DeutschGothic.eot?v=1.0.0');
 	src: 
-		url('./font/DeutschGothic/DeutschGothic.eot?#iefix&v=1.0.0') format('embedded-opentype'),
-		url('./font/DeutschGothic/DeutschGothic.woff2?v=1.0.0') format('woff2'),
-		url('./font/DeutschGothic/DeutschGothic.woff?v=1.0.0') format('woff'),
-		url('./font/DeutschGothic/DeutschGothic.ttf?v=1.0.0') format('truetype'),
-		url('./font/DeutschGothic/DeutschGothic.svg?v=1.0.0#fontawesomeregular') format('svg');
+		url('../font/DeutschGothic/DeutschGothic.eot?#iefix&v=1.0.0') format('embedded-opentype'),
+		url('../font/DeutschGothic/DeutschGothic.woff2?v=1.0.0') format('woff2'),
+		url('../font/DeutschGothic/DeutschGothic.woff?v=1.0.0') format('woff'),
+		url('../font/DeutschGothic/DeutschGothic.ttf?v=1.0.0') format('truetype'),
+		url('../font/DeutschGothic/DeutschGothic.svg?v=1.0.0#fontawesomeregular') format('svg');
 	font-family: 'Deutsch Gothic'
 }
 
@@ -272,21 +272,17 @@ img {
 }
 
 @media (max-width: 1101px) {
-	.logo {
-		margin: 50px auto 0
-	}
-	.logo_menu {
-		height: 12vw
-	}
+    .logo_menu img {
+        max-height: 12vw;
+        width: auto;
+    }
 }
 
 @media (min-width: 1100px) {
-	.logo {
-		margin: calc(50vh - 17.5vw) auto 0
-	}
-	.logo_menu {
-		height: 4.5vw
-	}
+    .logo_menu img {
+        max-height: 4.5vw;
+        width: auto;
+    }
 }
 
 .logo_menu {
@@ -295,11 +291,14 @@ img {
 }
 
 .logo__image {
-	margin-left: 7px;
-	height: 50vh;
-	display: inline-block;
-    /* English comment: smooth opacity transition */
-    transition: opacity 0.3s
+    margin-left: 7px;
+    height: 50vh;
+    display: block;
+}
+
+.logo__images {
+    display: block;      /* гарантируем блочное поведение */
+    overflow: hidden;    /* содержимое будет «обрезаться» по opacity/transform */
 }
 
 /* Cont
