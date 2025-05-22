@@ -39,6 +39,10 @@ class ContentSplitter {
         document.body.classList.toggle('menu__active');
       });
     });
+
+    // immediately apply saved percent (in case neither load nor resize fires)
+    this.updateHeight();
+    this.animateToSavedPercent();
   }
 
   isMobile() {
@@ -94,16 +98,14 @@ class ContentSplitter {
   animateToSavedPercent() {
     const saved = parseFloat(localStorage.getItem('vikingMythsSlider'));
     if (isNaN(saved)) return;
-    setTimeout(() => {
-      const point = (saved * window.innerWidth) / 100;
-      this.move(point);
-    }, 100);
+    const point = (saved * window.innerWidth) / 100;
+    this.move(point);
   }
 }
 
 // 1) При загрузке DOM показываем только loader
 document.addEventListener('DOMContentLoaded', () => {
-  document.body.classList.add('loading'); // заблокировать слайдер через CSS
+  document.body.classList.add('loading'); // заблокировать прокрутку и клики через CSS
   fetch('/assets/data/loader.json')
     .then(res => res.json())
     .then(data => {
@@ -120,18 +122,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 2) После полной загрузки страницы ждём 5 секунд, затем:
-//    – скрываем loader,
-//    – разблокируем слайдер,
-//    – показываем info-overlay (если ещё не доставлено),
+//    – плавно скрываем loader,
+//    – разблокируем страницу,
+//    – показываем info-overlay (если ещё не закрывали),
 //    – инициализируем ContentSplitter
 window.addEventListener('load', () => {
   setTimeout(() => {
     const loader = document.getElementById('loaderOverlay');
+    loader.classList.add('hidden'); // CSS-анимация opacity + visibility
 
-    // запустить затухание и автоматическое скрытие через CSS
-    loader.classList.add('hidden');
-
-    // после завершения transition — убрать блокировку прокрутки, показать инфо и инициализировать слайсер
     loader.addEventListener('transitionend', () => {
       document.body.classList.remove('loading');
 
@@ -139,15 +138,15 @@ window.addEventListener('load', () => {
       const infoOverlay = document.getElementById('infoOverlay');
       if (!localStorage.getItem('infoDismissed')) {
         infoOverlay.classList.remove('hidden');
-        document.getElementById('infoOk')
-                .addEventListener('click', () => {
+        document.getElementById('infoOk').addEventListener('click', () => {
           localStorage.setItem('infoDismissed', 'true');
           infoOverlay.classList.add('hidden');
         });
       }
 
-      // Инициализация слайдера
-      new ContentSplitter();
+      // Инициализация слайдера и немедленное применение сохранённого
+      const splitter = new ContentSplitter();
+      splitter.animateToSavedPercent();
     }, { once: true });
   }, 5000);
 });
