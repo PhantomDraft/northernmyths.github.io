@@ -3,7 +3,7 @@
 	Theme URI: https://northernmyths.phantom-draft.com/
 	Author: PD
 	Author URI: https://github.com/PhantomDraft
-	Version: 5.5
+	Version: 5.6
 */
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,700&family=Ruslan+Display&display=swap');
 
@@ -82,11 +82,16 @@ img {
   top: 0; left: 0;
   width: 100%; height: 100%;
   background: #000;
+  opacity: 1;
+  transition: opacity 0.5s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   z-index: 1000;
+}
+.loader-overlay.fade-out {
+  opacity: 0;
 }
 .loader-overlay.hidden {
   display: none !important;
@@ -105,6 +110,20 @@ img {
   background: rgba(0, 0, 0, 0.5);
   color: #fff;
   text-align: center;
+}
+
+/* Spinner */
+.loader-spinner {
+  margin-top: 1em;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* — Info overlay */

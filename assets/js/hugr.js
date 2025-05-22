@@ -126,20 +126,28 @@ document.addEventListener('DOMContentLoaded', () => {
 //    – инициализируем ContentSplitter
 window.addEventListener('load', () => {
   setTimeout(() => {
-    document.getElementById('loaderOverlay').classList.add('hidden');
-    document.body.classList.remove('loading');
+    const loader = document.getElementById('loaderOverlay');
 
-    // Info-overlay
-    const infoOverlay = document.getElementById('infoOverlay');
-    if (!localStorage.getItem('infoDismissed')) {
-      infoOverlay.classList.remove('hidden');
-      document.getElementById('infoOk').addEventListener('click', () => {
-        localStorage.setItem('infoDismissed', 'true');
-        infoOverlay.classList.add('hidden');
-      });
-    }
+    // start fade-out
+    loader.classList.add('fade-out');
 
-    // Инициализация слайдера
-    new ContentSplitter();
+    // после завершения перехода — окончательно скрыть
+    loader.addEventListener('transitionend', () => {
+      loader.classList.add('hidden');
+      document.body.classList.remove('loading');
+
+      // Info-overlay
+      const infoOverlay = document.getElementById('infoOverlay');
+      if (!localStorage.getItem('infoDismissed')) {
+        infoOverlay.classList.remove('hidden');
+        document.getElementById('infoOk').addEventListener('click', () => {
+          localStorage.setItem('infoDismissed', 'true');
+          infoOverlay.classList.add('hidden');
+        });
+      }
+
+      // Инициализация слайдера
+      new ContentSplitter();
+    }, { once: true });
   }, 5000);
 });
