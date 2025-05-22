@@ -1,35 +1,43 @@
-// style.js ➔ ES6 OOP, Vanilla JS
+// hugr.js ➔ ES6 OOP, Vanilla JS
 class ContentSplitter {
   constructor() {
     this.point = 0;
     this.btn = document.querySelector('.manager__js-btn');
-    this.restoreSavedPercent();                     // Load saved slider position
     this.hammer = new Hammer(this.btn);
-    this.leftLogo  = document.querySelector('.logo__images__left .logo__image');
-    this.rightLogo = document.querySelector('.logo__images__right .logo__image');
-    // English comment: cache logo containers for width control
     this.leftLogoContainer  = document.querySelector('.logo__images__left');
     this.rightLogoContainer = document.querySelector('.logo__images__right');
-
+    this.menuButtons = Array.from(document.querySelectorAll('.logo_menu, .main__menu--close')); // English comment: cache menu buttons
+    this.menu = document.querySelector('.main__menu');                                         // English comment: cache menu element
     this.init();
   }
 
   init() {
+    // on page load: adjust heights and animate to last saved position
     window.addEventListener('load', () => {
       this.updateHeight();
-      this.animateToSavedPercent();                // Animate to saved on page load
+      this.animateToSavedPercent();
     });
+
+    // on resize: recalc heights and animate to last saved position
     window.addEventListener('resize', () => {
       this.updateHeight();
-      this.animateToSavedPercent();                // Animate to saved on resize
+      this.animateToSavedPercent();
     });
+
+    // on slider drag: move and save percent
     this.hammer.on('pan', ev => {
       this.point = ev.center.x - window.innerWidth / 2 + 9;
       this.move(this.point);
-      this.saveCurrentPercent();                   // Save position on drag
+      this.saveCurrentPercent();
     });
-    window.addEventListener('resize', () => {
-      if (!this.isMobile()) this.move(0);
+
+    // menu toggle functionality
+    this.menuButtons.forEach(button => {
+      button.addEventListener('click', ev => {
+        ev.preventDefault();
+        this.menu.classList.toggle('menu__no__active');
+        document.body.classList.toggle('menu__active');
+      });
     });
   }
 
@@ -45,57 +53,51 @@ class ContentSplitter {
       headings.forEach(h3 => totalHeight += h3.offsetHeight);
       headings.forEach(h3 => h3.style.height = `${totalHeight}px`);
     });
-    if (!this.isMobile()) this.move(0);
+    if (!this.isMobile()) {
+      this.move(0);
+    }
   }
 
   move(point) {
+    // calculate bounds and percent
     const vw = window.innerWidth / 100;
     const max = (100 * vw - 29.4 * vw - 85) / 2;
     if (window.innerWidth >= 750) {
-      if (point < -max) point = -max;
-      if (point > max)   point = max;
+      point = Math.max(-max, Math.min(point, max));
     }
+    const total = -point * 2;
+    const percent = Math.round((100 * point) / window.innerWidth);
 
-    const reversable = -point;
-    const total     = reversable * 2;
-    const percent   = Math.round((100 * point) / window.innerWidth);
+    // update UI elements
+    document.querySelector('.hints__right span').textContent   = 50 - percent;
+    document.querySelector('.hints__left span').textContent    = 50 + percent;
+    document.querySelector('.fixer__gray-image').style.width   = `calc(200% + ${total}px)`;
+    document.querySelector('.fixer__gray').style.width         = `calc(50% + ${point}px)`;
+    this.btn.style.left                                        = `calc(50% - 20px + ${point}px)`;
+    document.querySelector('.manager__active').style.width     = `calc(50% + ${point}px)`;
+    document.querySelector('.manager__divider').style.left      = `calc(50% + ${point}px)`;
+    document.querySelector('.content__left').style.width        = `calc(50% + ${point}px)`;
+    document.querySelector('.content__right').style.width       = `calc(50% - ${point}px)`;
+    this.leftLogoContainer.style.width                         = `${percent}%`;
+    this.rightLogoContainer.style.width                        = `${100 - percent}%`;
 
-    document.querySelector('.hints__right span').textContent = 50 - percent;
-    document.querySelector('.hints__left span').textContent  = 50 + percent;
-    document.querySelector('.fixer__gray-image').style.width = `calc(200% + ${total}px)`;
-    document.querySelector('.fixer__gray').style.width       = `calc(50% + ${point}px)`;
-    this.btn.style.left                                    = `calc(50% - 20px + ${point}px)`;
-    document.querySelector('.manager__active').style.width  = `calc(50% + ${point}px)`;
-    document.querySelector('.manager__divider').style.left   = `calc(50% + ${point}px)`;
-    document.querySelector('.content__left').style.width     = `calc(50% + ${point}px)`;
-    document.querySelector('.content__right').style.width    = `calc(50% - ${point}px)`;
-    this.leftLogoContainer.style.width                      = percent + '%';
-    this.rightLogoContainer.style.width                     = (100 - percent) + '%';
+    // English comment: update saved percent for future restores
+    this._savedPercent = percent;
   }
 
-  // Save current slider percent in localStorage
+  // English comment: persist the last slider position
   saveCurrentPercent() {
-    const percent = Math.round((100 * this.point) / window.innerWidth);
-    localStorage.setItem('vikingMythsSlider', percent);
+    localStorage.setItem('vikingMythsSlider', this._savedPercent);
   }
 
-  // Restore saved percent from localStorage
-  restoreSavedPercent() {
-    const saved = parseFloat(localStorage.getItem('vikingMythsSlider'));
-    this._savedPercent = isNaN(saved) ? null : saved;
-  }
-
-  // Animate slider back to saved percent (if any)
+  // English comment: read saved position and animate back to it
   animateToSavedPercent() {
-    if (this._savedPercent === null) return;
-    // Allow default reset to complete
-    setTimeout(() => this.animateTo(this._savedPercent), 100);
-  }
-
-  // Convert percent to point and reuse move()
-  animateTo(percent) {
-    const point = (percent * window.innerWidth) / 100;
-    this.move(point);
+    const saved = parseFloat(localStorage.getItem('vikingMythsSlider'));
+    if (isNaN(saved)) return;
+    setTimeout(() => {
+      const point = (saved * window.innerWidth) / 100;
+      this.move(point);
+    }, 100);
   }
 }
 

@@ -3,7 +3,7 @@
 	Theme URI: https://northernmyths.phantom-draft.com/
 	Author: PD
 	Author URI: https://github.com/PhantomDraft
-	Version: 5.3
+	Version: 5.4
 */
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,700&family=Ruslan+Display&display=swap');
 
@@ -193,7 +193,6 @@ img {
 }
 
 .manager__active {
-	transition: width 0.4s ease;
 	background: rgb(34, 34, 34);
 	height: 30px; width: 50%
 }
@@ -201,7 +200,6 @@ img {
 .manager__js-btn {
 	cursor: ew-resize;
 	animation: pulse 3s infinite;
-	transition: left 0.4s ease;
 	box-shadow: inset rgba(0, 0, 0, .6) 0 -3px 8px, inset rgba(252, 255, 255, .7) 0 3px 8px, rgba(178, 34, 34, .8) 0 3px 7px -3px, rgba(178, 34, 34, .8) 0 3px 7px -3px;
 	border-radius: 50%;
 	background-color: red;
