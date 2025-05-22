@@ -93,18 +93,21 @@ class ContentSplitter {
     const percent = Math.round((100 * point) / window.innerWidth);
 
     // update UI elements
-    document.querySelector('.hints__right span').textContent   = 50 - percent;
-    document.querySelector('.hints__left span').textContent    = 50 + percent;
-    document.querySelector('.fixer__gray-image').style.width   = `calc(200% + ${total}px)`;
-    document.querySelector('.fixer__gray').style.width         = `calc(50% + ${point}px)`;
-    this.btn.style.left                                        = `calc(50% - 20px + ${point}px)`;
-    document.querySelector('.manager__active').style.width     = `calc(50% + ${point}px)`;
-    document.querySelector('.manager__divider').style.left      = `calc(50% + ${point}px)`;
-    document.querySelector('.content__left').style.width        = `calc(50% + ${point}px)`;
-    document.querySelector('.content__right').style.width       = `calc(50% - ${point}px)`;
-    this.leftLogoContainer.style.width                         = `${percent}%`;
-    this.rightLogoContainer.style.width                        = `${100 - percent}%`;
-
+    document.querySelector('.hints__right span').textContent = 50 - percent;
+    document.querySelector('.hints__left span').textContent = 50 + percent;
+    document.querySelector('.fixer__gray-image').style.width = `calc(200% + ${total}px)`;
+    document.querySelector('.fixer__gray').style.width = `calc(50% + ${point}px)`;
+    this.btn.style.left = `calc(50% - 20px + ${point}px)`;
+    document.querySelector('.manager__active').style.width = `calc(50% + ${point}px)`;
+    document.querySelector('.manager__divider').style.left = `calc(50% + ${point}px)`;
+    document.querySelectorAll('.content__left').forEach(el => {
+      el.style.width = `calc(50% + ${point}px)`;
+    });
+    document.querySelectorAll('.content__right').forEach(el => {
+      el.style.width = `calc(50% - ${point}px)`;
+    });
+    this.leftLogoContainer.style.width = `${percent}%`;
+    this.rightLogoContainer.style.width = `${100 - percent}%`;
     // English comment: update saved percent for future restores
     this._savedPercent = percent;
   }
