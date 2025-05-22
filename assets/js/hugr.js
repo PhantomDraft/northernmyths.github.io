@@ -101,4 +101,39 @@ class ContentSplitter {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => new ContentSplitter());
+document.addEventListener('DOMContentLoaded', () => {
+  // 1) Инициализация слайсера
+  new ContentSplitter();
+
+  // 2) Loader overlay
+  fetch('/assets/data/loader.json')
+    .then(res => res.json())
+    .then(data => {
+      const idx = Math.floor(Math.random() * data.length);
+      const { image, text } = data[idx];
+      const loader = document.getElementById('loaderOverlay');
+      loader.querySelector('.loader-image')
+            .style.backgroundImage = `url(${image})`;
+      loader.querySelector('.loader-text')
+            .textContent = text;
+      loader.classList.remove('hidden');
+      window.addEventListener('load', () => {
+        setTimeout(() => loader.classList.add('hidden'), 5000);
+      });
+    })
+    .catch(() => {
+      document.getElementById('loaderOverlay')
+              .classList.add('hidden');
+    });
+
+  // 3) Info overlay
+  const infoOverlay = document.getElementById('infoOverlay');
+  if (!localStorage.getItem('infoDismissed')) {
+    infoOverlay.classList.remove('hidden');
+  }
+  document.getElementById('infoOk')
+          .addEventListener('click', () => {
+    localStorage.setItem('infoDismissed', 'true');
+    infoOverlay.classList.add('hidden');
+  });
+});
