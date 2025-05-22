@@ -101,39 +101,45 @@ class ContentSplitter {
   }
 }
 
+// 1) При загрузке DOM показываем только loader
 document.addEventListener('DOMContentLoaded', () => {
-  // 1) Инициализация слайсера
-  new ContentSplitter();
-
-  // 2) Loader overlay
+  document.body.classList.add('loading'); // заблокировать слайдер через CSS
   fetch('/assets/data/loader.json')
     .then(res => res.json())
     .then(data => {
       const idx = Math.floor(Math.random() * data.length);
       const { image, text } = data[idx];
       const loader = document.getElementById('loaderOverlay');
-      loader.querySelector('.loader-image')
-            .style.backgroundImage = `url(${image})`;
-      loader.querySelector('.loader-text')
-            .textContent = text;
+      loader.querySelector('.loader-image').style.backgroundImage = `url(${image})`;
+      loader.querySelector('.loader-text').textContent = text;
       loader.classList.remove('hidden');
-      window.addEventListener('load', () => {
-        setTimeout(() => loader.classList.add('hidden'), 5000);
-      });
     })
     .catch(() => {
-      document.getElementById('loaderOverlay')
-              .classList.add('hidden');
+      document.getElementById('loaderOverlay').classList.remove('hidden');
     });
+});
 
-  // 3) Info overlay
-  const infoOverlay = document.getElementById('infoOverlay');
-  if (!localStorage.getItem('infoDismissed')) {
-    infoOverlay.classList.remove('hidden');
-  }
-  document.getElementById('infoOk')
-          .addEventListener('click', () => {
-    localStorage.setItem('infoDismissed', 'true');
-    infoOverlay.classList.add('hidden');
-  });
+// 2) После полной загрузки страницы ждём 5 секунд, затем:
+//    – скрываем loader,
+//    – разблокируем слайдер,
+//    – показываем info-overlay (если ещё не доставлено),
+//    – инициализируем ContentSplitter
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loaderOverlay').classList.add('hidden');
+    document.body.classList.remove('loading');
+
+    // Info-overlay
+    const infoOverlay = document.getElementById('infoOverlay');
+    if (!localStorage.getItem('infoDismissed')) {
+      infoOverlay.classList.remove('hidden');
+      document.getElementById('infoOk').addEventListener('click', () => {
+        localStorage.setItem('infoDismissed', 'true');
+        infoOverlay.classList.add('hidden');
+      });
+    }
+
+    // Инициализация слайдера
+    new ContentSplitter();
+  }, 5000);
 });
