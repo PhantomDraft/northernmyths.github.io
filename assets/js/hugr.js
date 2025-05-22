@@ -4,10 +4,10 @@ class ContentSplitter {
     this.point = 0;
     this.btn = document.querySelector('.manager__js-btn');
     this.hammer = new Hammer(this.btn);
-    // cache all split-image containers for universal split logic
-    this.splitContainers = Array.from(document.querySelectorAll('.split-image'));
-    this.menuButtons = Array.from(document.querySelectorAll('.logo_menu, .main__menu--close')); // English comment: cache menu buttons
-    this.menu = document.querySelector('.main__menu');                                         // English comment: cache menu element
+    this.leftLogoContainer  = document.querySelector('.logo__images__left');
+    this.rightLogoContainer = document.querySelector('.logo__images__right');
+    this.menuButtons = Array.from(document.querySelectorAll('.logo_menu, .main__menu--close')); // cache menu buttons
+    this.menu = document.querySelector('.main__menu'); // cache menu element
     this.init();
   }
 
@@ -17,20 +17,17 @@ class ContentSplitter {
       this.updateHeight();
       this.animateToSavedPercent();
     });
-
     // on resize: recalc heights and animate to last saved position
     window.addEventListener('resize', () => {
       this.updateHeight();
       this.animateToSavedPercent();
     });
-
     // on slider drag: move and save percent
     this.hammer.on('pan', ev => {
       this.point = ev.center.x - window.innerWidth / 2 + 9;
       this.move(this.point);
       this.saveCurrentPercent();
     });
-
     // menu toggle functionality
     this.menuButtons.forEach(button => {
       button.addEventListener('click', ev => {
@@ -39,7 +36,6 @@ class ContentSplitter {
         document.body.classList.toggle('menu__active');
       });
     });
-
     // immediately apply saved percent (in case neither load nor resize fires)
     this.updateHeight();
     this.animateToSavedPercent();
@@ -67,10 +63,8 @@ class ContentSplitter {
       // Reset inline height before measuring
       leftH2.style.height  = 'auto';
       rightH2.style.height = 'auto';
-
       // Calculate the maximum height
       const maxH = Math.max(leftH2.offsetHeight, rightH2.offsetHeight);
-
       // Apply the maximum height to both
       leftH2.style.height  = `${maxH}px`;
       rightH2.style.height = `${maxH}px`;
@@ -91,7 +85,6 @@ class ContentSplitter {
     }
     const total = -point * 2;
     const percent = Math.round((100 * point) / window.innerWidth);
-
     // update UI elements
     document.querySelector('.hints__right span').textContent = 50 - percent;
     document.querySelector('.hints__left span').textContent = 50 + percent;
@@ -106,19 +99,13 @@ class ContentSplitter {
     document.querySelectorAll('.content__right').forEach(el => {
       el.style.width = `calc(50% - ${point}px)`;
     });
-    // update split-image halves widths for all containers
-    this.splitContainers.forEach(container => {
-      const leftHalf  = container.querySelector('.split-image__half--left');
-      const rightHalf = container.querySelector('.split-image__half--right');
-      if (!leftHalf || !rightHalf) return;
-      leftHalf.style.width  = `${percent}%`;
-      rightHalf.style.width = `${100 - percent}%`;
-    });
-    // update saved percent for future restores
+    this.leftLogoContainer.style.width = `${percent}%`;
+    this.rightLogoContainer.style.width = `${100 - percent}%`;
+    // English comment: update saved percent for future restores
     this._savedPercent = percent;
   }
 
-  // English comment: persist the last slider position
+  // persist the last slider position
   saveCurrentPercent() {
     localStorage.setItem('vikingMythsSlider', this._savedPercent);
   }
@@ -134,7 +121,7 @@ class ContentSplitter {
 
 // 1) On DOM load, display only the loader
 document.addEventListener('DOMContentLoaded', () => {
-  document.body.classList.add('loading'); // заблокировать прокрутку и клики через CSS
+  document.body.classList.add('loading');
   fetch('/assets/data/loader.json')
     .then(res => res.json())
     .then(data => {
@@ -158,11 +145,9 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('load', () => {
   setTimeout(() => {
     const loader = document.getElementById('loaderOverlay');
-    loader.classList.add('hidden'); // CSS-анимация opacity + visibility
-
+    loader.classList.add('hidden'); // opacity + visibility
     loader.addEventListener('transitionend', () => {
       document.body.classList.remove('loading');
-
       // Info-overlay
       const infoOverlay = document.getElementById('infoOverlay');
       if (!localStorage.getItem('infoDismissed')) {
@@ -172,7 +157,6 @@ window.addEventListener('load', () => {
           infoOverlay.classList.add('hidden');
         });
       }
-
       // Initialize the slider and immediately apply the saved state
       const splitter = new ContentSplitter();
       splitter.animateToSavedPercent();
