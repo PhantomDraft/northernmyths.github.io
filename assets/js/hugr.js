@@ -51,26 +51,32 @@ class ContentSplitter {
   }
 
   updateHeight() {
-    document.querySelectorAll('.content').forEach(content => {
-      const headings = content.querySelectorAll('.line-wrap h3');
+    // Get both columns
+    const leftCol  = document.querySelector('.content__left');
+    const rightCol = document.querySelector('.content__right');
 
-      // 1) Сброс inline-height перед замерами
-      headings.forEach(h3 => {
-        h3.style.height = 'auto';
-      });
+    if (!leftCol || !rightCol) return;
 
-      // 2) Собираем сумму «натуральных» высот
-      let totalHeight = 0;
-      headings.forEach(h3 => {
-        totalHeight += h3.offsetHeight;
-      });
+    // Find the first <h2> containing an <a> in each column
+    const leftH2  = Array.from(leftCol.querySelectorAll('h2'))
+                         .find(h2 => h2.querySelector('a'));
+    const rightH2 = Array.from(rightCol.querySelectorAll('h2'))
+                         .find(h2 => h2.querySelector('a'));
 
-      // 3) Применяем единоразово общую высоту
-      headings.forEach(h3 => {
-        h3.style.height = `${totalHeight}px`;
-      });
-    });
+    if (leftH2 && rightH2) {
+      // Reset inline height before measuring
+      leftH2.style.height  = 'auto';
+      rightH2.style.height = 'auto';
 
+      // Calculate the maximum height
+      const maxH = Math.max(leftH2.offsetHeight, rightH2.offsetHeight);
+
+      // Apply the maximum height to both
+      leftH2.style.height  = `${maxH}px`;
+      rightH2.style.height = `${maxH}px`;
+    }
+
+    // Existing logic to reset slider position on desktop
     if (!this.isMobile()) {
       this.move(0);
     }
@@ -117,7 +123,7 @@ class ContentSplitter {
   }
 }
 
-// 1) При загрузке DOM показываем только loader
+// 1) On DOM load, display only the loader
 document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('loading'); // заблокировать прокрутку и клики через CSS
   fetch('/assets/data/loader.json')
@@ -135,11 +141,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// 2) После полной загрузки страницы ждём 5 секунд, затем:
-//    – плавно скрываем loader,
-//    – разблокируем страницу,
-//    – показываем info-overlay (если ещё не закрывали),
-//    – инициализируем ContentSplitter
+// 2) After the page fully loads, wait 5 seconds, then:
+//    – smoothly hide the loader,
+//    – unlock the page,
+//    – show the info-overlay (if it hasn’t been closed yet),
+//    – initialize ContentSplitter
 window.addEventListener('load', () => {
   setTimeout(() => {
     const loader = document.getElementById('loaderOverlay');
@@ -158,7 +164,7 @@ window.addEventListener('load', () => {
         });
       }
 
-      // Инициализация слайдера и немедленное применение сохранённого
+      // Initialize the slider and immediately apply the saved state
       const splitter = new ContentSplitter();
       splitter.animateToSavedPercent();
     }, { once: true });
