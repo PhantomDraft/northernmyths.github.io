@@ -4,10 +4,8 @@ class ContentSplitter {
     this.point = 0;
     this.btn = document.querySelector('.manager__js-btn');
     this.hammer = new Hammer(this.btn);
-    this.leftLogoContainer  = document.querySelector('.logo__images__left');
-    this.rightLogoContainer = document.querySelector('.logo__images__right');
-    this.leftMenuContainer  = document.querySelector('.logo_menu__images__left');
-    this.rightMenuContainer = document.querySelector('.logo_menu__images__right');
+    // cache all split-image containers for universal split logic
+    this.splitContainers = Array.from(document.querySelectorAll('.split-image'));
     this.menuButtons = Array.from(document.querySelectorAll('.logo_menu, .main__menu--close')); // English comment: cache menu buttons
     this.menu = document.querySelector('.main__menu');                                         // English comment: cache menu element
     this.init();
@@ -108,13 +106,15 @@ class ContentSplitter {
     document.querySelectorAll('.content__right').forEach(el => {
       el.style.width = `calc(50% - ${point}px)`;
     });
-    this.leftLogoContainer.style.width = `${percent}%`;
-    this.rightLogoContainer.style.width = `${100 - percent}%`;
-    if (this.leftMenuContainer && this.rightMenuContainer) {
-      this.leftMenuContainer.style.width  = `${percent}%`;
-      this.rightMenuContainer.style.width = `${100 - percent}%`;
-    }
-    // English comment: update saved percent for future restores
+    // update split-image halves widths for all containers
+    this.splitContainers.forEach(container => {
+      const leftHalf  = container.querySelector('.split-image__half--left');
+      const rightHalf = container.querySelector('.split-image__half--right');
+      if (!leftHalf || !rightHalf) return;
+      leftHalf.style.width  = `${percent}%`;
+      rightHalf.style.width = `${100 - percent}%`;
+    });
+    // update saved percent for future restores
     this._savedPercent = percent;
   }
 

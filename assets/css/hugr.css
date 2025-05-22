@@ -3,7 +3,7 @@
 	Theme URI: https://northernmyths.phantom-draft.com/
 	Author: PD
 	Author URI: https://github.com/PhantomDraft
-	Version: 5.8
+	Version: 6.0
 */
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,700&family=Ruslan+Display&display=swap');
 
@@ -74,6 +74,34 @@ img {
 
 .overflow-x-hidden {
 	overflow-x: hidden
+}
+
+/* Universal split-image styles
+ */
+.split-image {
+  position: relative;
+  overflow: hidden;
+}
+.split-image__half {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  overflow: hidden;
+}
+.split-image__half--left {
+  left: 0;
+}
+.split-image__half--right {
+  right: 0;
+}
+.split-image img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  display: block;
 }
 
 /* Loader overlay
@@ -378,64 +406,6 @@ html.loading {
 .logo_menu {
 	margin: 0 auto 1vh;
 	display: inline-block
-}
-
-.logo__images { /* Wrapper */
-	overflow: hidden;
-	height: 50vh;
-	width: 100%;
-    position: relative
-}
-
-.logo__images__left {
-	overflow: hidden;
-	height: 100%;
-	width: 50%;
-    float: left
-}
-
-.logo__images__right {
-	overflow: hidden;
-	height: 100%;
-	width: 50%;
-    float: right
-}
-
-.logo__image {
-	transform: translateX(-50%);
-	left: 50%;
-	top: 0;
-	height: 100%;
-	position: absolute
-}
-
-/* ---- «сплит»-контейнер для иконки меню ---- */
-.logo_menu__images {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    /* высота будет задана img-ами через max-height из существующих media-правил */
-}
-
-.logo_menu__images__left,
-.logo_menu__images__right {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 50%;
-    overflow: hidden;
-}
-
-.logo_menu__images__left { left: 0; }
-.logo_menu__images__right { right: 0; }
-
-.logo_menu__image {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 100%;
-    display: block;
 }
 
 /* Main
