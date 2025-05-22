@@ -406,7 +406,36 @@ html.loading {
 	left: 50%;
 	top: 0;
 	height: 100%;
-    position: absolute
+	position: absolute
+}
+
+/* ---- «сплит»-контейнер для иконки меню ---- */
+.logo_menu__images {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    /* высота будет задана img-ами через max-height из существующих media-правил */
+}
+
+.logo_menu__images__left,
+.logo_menu__images__right {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    overflow: hidden;
+}
+
+.logo_menu__images__left { left: 0; }
+.logo_menu__images__right { right: 0; }
+
+.logo_menu__image {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    display: block;
 }
 
 /* Main

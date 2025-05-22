@@ -6,6 +6,8 @@ class ContentSplitter {
     this.hammer = new Hammer(this.btn);
     this.leftLogoContainer  = document.querySelector('.logo__images__left');
     this.rightLogoContainer = document.querySelector('.logo__images__right');
+    this.leftMenuContainer  = document.querySelector('.logo_menu__images__left');
+    this.rightMenuContainer = document.querySelector('.logo_menu__images__right');
     this.menuButtons = Array.from(document.querySelectorAll('.logo_menu, .main__menu--close')); // English comment: cache menu buttons
     this.menu = document.querySelector('.main__menu');                                         // English comment: cache menu element
     this.init();
@@ -108,6 +110,10 @@ class ContentSplitter {
     });
     this.leftLogoContainer.style.width = `${percent}%`;
     this.rightLogoContainer.style.width = `${100 - percent}%`;
+    if (this.leftMenuContainer && this.rightMenuContainer) {
+      this.leftMenuContainer.style.width  = `${percent}%`;
+      this.rightMenuContainer.style.width = `${100 - percent}%`;
+    }
     // English comment: update saved percent for future restores
     this._savedPercent = percent;
   }
