@@ -77,6 +77,12 @@ img {
 }
 
 /* — Loader overlay */
+body.loading,
+html.loading {
+  overflow: hidden;
+  height: 100vh;
+}
+
 .loader-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -90,11 +96,9 @@ img {
   flex-direction: column;
   z-index: 1000;
 }
-.loader-overlay.fade-out {
-  opacity: 0;
-}
 .loader-overlay.hidden {
-  display: none !important;
+  opacity: 0;
+  visibility: hidden; /* срабатывает после задержки 0.5 с, заданной в transition-delay */
 }
 .loader-image {
   width: 40%; height: 40%;

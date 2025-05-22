@@ -128,19 +128,19 @@ window.addEventListener('load', () => {
   setTimeout(() => {
     const loader = document.getElementById('loaderOverlay');
 
-    // start fade-out
-    loader.classList.add('fade-out');
+    // запустить затухание и автоматическое скрытие через CSS
+    loader.classList.add('hidden');
 
-    // после завершения перехода — окончательно скрыть
+    // после завершения transition — убрать блокировку прокрутки, показать инфо и инициализировать слайсер
     loader.addEventListener('transitionend', () => {
-      loader.classList.add('hidden');
       document.body.classList.remove('loading');
 
       // Info-overlay
       const infoOverlay = document.getElementById('infoOverlay');
       if (!localStorage.getItem('infoDismissed')) {
         infoOverlay.classList.remove('hidden');
-        document.getElementById('infoOk').addEventListener('click', () => {
+        document.getElementById('infoOk')
+                .addEventListener('click', () => {
           localStorage.setItem('infoDismissed', 'true');
           infoOverlay.classList.add('hidden');
         });
