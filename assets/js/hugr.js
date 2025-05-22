@@ -52,11 +52,25 @@ class ContentSplitter {
 
   updateHeight() {
     document.querySelectorAll('.content').forEach(content => {
-      let totalHeight = 0;
       const headings = content.querySelectorAll('.line-wrap h3');
-      headings.forEach(h3 => totalHeight += h3.offsetHeight);
-      headings.forEach(h3 => h3.style.height = `${totalHeight}px`);
+
+      // 1) Сброс inline-height перед замерами
+      headings.forEach(h3 => {
+        h3.style.height = 'auto';
+      });
+
+      // 2) Собираем сумму «натуральных» высот
+      let totalHeight = 0;
+      headings.forEach(h3 => {
+        totalHeight += h3.offsetHeight;
+      });
+
+      // 3) Применяем единоразово общую высоту
+      headings.forEach(h3 => {
+        h3.style.height = `${totalHeight}px`;
+      });
     });
+
     if (!this.isMobile()) {
       this.move(0);
     }
