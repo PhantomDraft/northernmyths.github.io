@@ -12,9 +12,9 @@ class ContentSplitter {
 
     // define all slider target pairs for unified width updates
     this.sliderPairs = [
-      { leftSelector: '.logo__images__left',  rightSelector: '.logo__images__right' },
-      { leftSelector: '.content__left',       rightSelector: '.content__right' },
-      { leftSelector: '.logo_menu__left',     rightSelector: '.logo_menu__right' }
+      { leftSelector: '.logo__images__left',                rightSelector: '.logo__images__right' },
+      { leftSelector: '.content__left-text .line-wrap',     rightSelector: '.content__right-text .line-wrap' },
+      { leftSelector: '.logo_menu__left',                   rightSelector: '.logo_menu__right' }
     ];
 
     this.init();
