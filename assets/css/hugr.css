@@ -3,7 +3,7 @@
 	Theme URI: https://northernmyths.phantom-draft.com/
 	Author: PD
 	Author URI: https://github.com/PhantomDraft
-	Version: 6.1
+	Version: 6.2
 */
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,700&family=Ruslan+Display&display=swap');
 
@@ -110,6 +110,7 @@ html.loading {
 .loader-text {
   color: #fff;
   text-align: center;
+  white-space: pre-wrap;
 	background: rgba(0, 0, 0, 0.5);
 	padding: 1em;
 	bottom: 0;
