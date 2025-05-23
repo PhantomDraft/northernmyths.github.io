@@ -1,5 +1,4 @@
 // hugr.js ➔ ES6 OOP, Vanilla JS
-
 class ContentSplitter {
   constructor() {
     this.point = 0;
