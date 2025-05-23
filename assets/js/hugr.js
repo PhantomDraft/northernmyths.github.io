@@ -7,14 +7,16 @@ class ContentSplitter {
     this.hammer = new Hammer(this.btn);
 
     // cache menu buttons and menu element
-    this.menuButtons = Array.from(document.querySelectorAll('.logo_menu, .main__menu--close'));
+    this.menuButtons = Array.from(
+      document.querySelectorAll('.logo_menu, .main__menu--close')
+    );
     this.menu = document.querySelector('.main__menu');
 
     // define all left/right pairs for unified width updates
     this.sliderPairs = [
-      { leftSelector: '.logo__images__left', rightSelector: '.logo__images__right' },
-      { leftSelector: '.content__left',      rightSelector: '.content__right' },
-      { leftSelector: '.logo_menu__left',    rightSelector: '.logo_menu__right' }
+      { leftSelector: '.logo__images__left',      rightSelector: '.logo__images__right'      },
+      { leftSelector: '.content__left-text',      rightSelector: '.content__right-text'      },
+      { leftSelector: '.logo_menu__left',         rightSelector: '.logo_menu__right'         }
     ];
 
     this.init();
@@ -49,7 +51,7 @@ class ContentSplitter {
       });
     });
 
-    // immediately apply saved percent
+    // immediately apply saved percent in case neither load nor resize fires
     this.updateHeight();
     this.animateToSavedPercent();
   }
@@ -82,7 +84,7 @@ class ContentSplitter {
   }
 
   move(point) {
-    // calculate allowed range and percentage
+    // calculate allowed range and percent
     const vw  = window.innerWidth / 100;
     const max = (100 * vw - 29.4 * vw - 85) / 2;
     if (window.innerWidth >= 750) {
