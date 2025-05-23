@@ -871,26 +871,49 @@ html.loading {
 	padding: 0; margin: 2vh 1.5vw
 }
 
-/* Slider wrappers for arbitrary elements */
-.js-slider-target--left,
-.js-slider-target--right {
-  display: inline-block;
-  vertical-align: middle;
+/* ———————————— */
+/* Restore logo halves (float+overflow) */
+.logo__images__left,
+.logo__images__right {
+  float: left;
   overflow: hidden;
   width: 50%;
+  height: 100%;
+}
+
+.logo__images__right {
+  float: right;
+}
+
+/* ———————————— */
+/* Content columns already float и overflow-x:hidden */
+.content__left,
+.content__right {
+  /* width и float определены у вас */
+  overflow-x: hidden; /* обрезка содержимого */
+}
+
+/* ———————————— */
+/* Menu-icon halves, same as logo */
+.logo_menu__left,
+.logo_menu__right {
+  float: left;
+  overflow: hidden;
+  width: 50%;
+  height: auto;
   position: relative;
 }
 
-/* For images inside wrappers (e.g., menu icon) */
-.js-slider-target--left .logo_menu__image,
-.js-slider-target--right .logo_menu__image {
+/* Inner image twice шире, чтобы можно было сдвигать */
+.logo_menu__left img,
+.logo_menu__right img {
   position: absolute;
   top: 0;
   width: 200%;
   height: auto;
 }
 
-/* Right half of image shifted */
-.js-slider-target--right .logo_menu__image {
+/* показываем правую половину */
+.logo_menu__right img {
   left: -100%;
 }

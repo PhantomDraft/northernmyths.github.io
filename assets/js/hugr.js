@@ -10,12 +10,12 @@ class ContentSplitter {
     this.menuButtons = Array.from(document.querySelectorAll('.logo_menu, .main__menu--close'));
     this.menu = document.querySelector('.main__menu');
 
-// define selectors of all left/right halves for slider
-this.sliderPairs = [
-  { leftSelector: '.logo__images__left',            rightSelector: '.logo__images__right' },
-  { leftSelector: '.content__left-text .line-wrap', rightSelector: '.content__right-text .line-wrap' },
-  { leftSelector: '.logo_menu__left',               rightSelector: '.logo_menu__right' }
-];
+    // define all left/right pairs for unified width updates
+    this.sliderPairs = [
+      { leftSelector: '.logo__images__left', rightSelector: '.logo__images__right' },
+      { leftSelector: '.content__left',      rightSelector: '.content__right' },
+      { leftSelector: '.logo_menu__left',    rightSelector: '.logo_menu__right' }
+    ];
 
     this.init();
   }
@@ -49,7 +49,7 @@ this.sliderPairs = [
       });
     });
 
-    // immediately apply saved percent (in case neither load nor resize fires)
+    // immediately apply saved percent
     this.updateHeight();
     this.animateToSavedPercent();
   }
@@ -60,12 +60,11 @@ this.sliderPairs = [
   }
 
   updateHeight() {
-    // Get both content columns
     const leftCol  = document.querySelector('.content__left');
     const rightCol = document.querySelector('.content__right');
     if (!leftCol || !rightCol) return;
 
-    // Find first <h2> with <a> in each column, adjust to same height
+    // Equalize first <h2> height in both columns
     const leftH2  = Array.from(leftCol.querySelectorAll('h2')).find(h2 => h2.querySelector('a'));
     const rightH2 = Array.from(rightCol.querySelectorAll('h2')).find(h2 => h2.querySelector('a'));
     if (leftH2 && rightH2) {
@@ -82,37 +81,43 @@ this.sliderPairs = [
     }
   }
 
-move(point) {
-  const vw  = window.innerWidth / 100;
-  const max = (100 * vw - 29.4 * vw - 85) / 2;
-  if (window.innerWidth >= 750) {
-    point = Math.max(-max, Math.min(point, max));
+  move(point) {
+    // calculate allowed range and percentage
+    const vw  = window.innerWidth / 100;
+    const max = (100 * vw - 29.4 * vw - 85) / 2;
+    if (window.innerWidth >= 750) {
+      point = Math.max(-max, Math.min(point, max));
+    }
+
+    const total   = -point * 2;
+    const percent = Math.round((100 * point) / window.innerWidth);
+
+    // update hints
+    document.querySelector('.hints__right span').textContent = 50 - percent;
+    document.querySelector('.hints__left span').textContent  = 50 + percent;
+
+    // update fixer images
+    document.querySelector('.fixer__gray-image').style.width = `calc(200% + ${total}px)`;
+    document.querySelector('.fixer__gray').style.width       = `calc(50% + ${point}px)`;
+
+    // move slider button and divider
+    this.btn.style.left                              = `calc(50% - 20px + ${point}px)`;
+    document.querySelector('.manager__active').style.width = `calc(50% + ${point}px)`;
+    document.querySelector('.manager__divider').style.left = `calc(50% + ${point}px)`;
+
+    // unified width update for logo, content and menu-icon
+    this.sliderPairs.forEach(({ leftSelector, rightSelector }) => {
+      document.querySelectorAll(leftSelector).forEach(el => {
+        el.style.width = `${percent}%`;
+      });
+      document.querySelectorAll(rightSelector).forEach(el => {
+        el.style.width = `${100 - percent}%`;
+      });
+    });
+
+    // English comment: update saved percent for future restores
+    this._savedPercent = percent;
   }
-  const total   = -point * 2;
-  const percent = Math.round((100 * point) / window.innerWidth);
-
-  // update hints and fixer exactly как было
-  document.querySelector('.hints__right span').textContent = 50 - percent;
-  document.querySelector('.hints__left span').textContent  = 50 + percent;
-  document.querySelector('.fixer__gray-image').style.width = `calc(200% + ${total}px)`;
-  document.querySelector('.fixer__gray').style.width       = `calc(50% + ${point}px)`;
-  this.btn.style.left                                    = `calc(50% - 20px + ${point}px)`;
-  document.querySelector('.manager__active').style.width = `calc(50% + ${point}px)`;
-  document.querySelector('.manager__divider').style.left = `calc(50% + ${point}px)`;
-
-  // unified width update for logo, content and menu icons
-  this.sliderPairs.forEach(({ leftSelector, rightSelector }) => {
-    document.querySelectorAll(leftSelector).forEach(el => {
-      el.style.width = `${percent}%`;
-    });
-    document.querySelectorAll(rightSelector).forEach(el => {
-      el.style.width = `${100 - percent}%`;
-    });
-  });
-
-  // English comment: update saved percent for future restores
-  this._savedPercent = percent;
-}
 
   // persist the last slider position
   saveCurrentPercent() {
@@ -146,14 +151,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// 2) After full page load: hide loader, show info, then init ContentSplitter
+// 2) After full page load: hide loader, show info-overlay, then init ContentSplitter
 window.addEventListener('load', () => {
   setTimeout(() => {
     const loader = document.getElementById('loaderOverlay');
     loader.classList.add('hidden'); // opacity + visibility
     loader.addEventListener('transitionend', () => {
       document.body.classList.remove('loading');
-      // show info-overlay if not dismissed
       const infoOverlay = document.getElementById('infoOverlay');
       if (!localStorage.getItem('infoDismissed')) {
         infoOverlay.classList.remove('hidden');
@@ -162,7 +166,7 @@ window.addEventListener('load', () => {
           infoOverlay.classList.add('hidden');
         });
       }
-      // initialize splitter and apply saved position
+      // initialize slider and apply saved state
       const splitter = new ContentSplitter();
       splitter.animateToSavedPercent();
     }, { once: true });
