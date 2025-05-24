@@ -73,24 +73,41 @@ class ContentSplitter {
   }
 
   move(point) {
-    const vw  = window.innerWidth / 100;
-    const max = (100 * vw - 29.4 * vw - 85) / 2;
+    // Calculate half the width of the slider button
+    const btnHalf = this.btn.offsetWidth / 2;
+
+    // Compute maximum horizontal translation: half of viewport width minus half button width
+    const max = window.innerWidth / 2 - btnHalf;
+
+    // Clamp 'point' within [-max, +max] when viewport is at least 750px wide
     if (window.innerWidth >= 750) {
       point = Math.max(-max, Math.min(point, max));
     }
-    const total   = -point * 2;
+
+    // Calculate total shift for image expansion (inverse of slider movement)
+    const total = -point * 2;
+
+    // Determine slider position as a percentage of viewport width
     const percent = Math.round((100 * point) / window.innerWidth);
 
+    // Update hint labels to show left/right percentages
     document.querySelector('.hints__right span').textContent = 50 - percent;
     document.querySelector('.hints__left span').textContent  = 50 + percent;
 
+    // Adjust the width of the gray image background
     document.querySelector('.fixer__gray-image').style.width = `calc(200% + ${total}px)`;
+
+    // Adjust the width of the gray overlay
     document.querySelector('.fixer__gray').style.width       = `calc(50% + ${point}px)`;
 
-    this.btn.style.left                                = `calc(50% - 20px + ${point}px)`;
+    // Position the slider button, offset by half its width to center it exactly
+    this.btn.style.left = `calc(50% - ${btnHalf}px + ${point}px)`;
+
+    // Resize the active area and reposition the divider line
     document.querySelector('.manager__active').style.width = `calc(50% + ${point}px)`;
     document.querySelector('.manager__divider').style.left = `calc(50% + ${point}px)`;
 
+    // Update any additional panels defined in sliderTargets
     this.sliderTargets.forEach(({ leftSelector, rightSelector, mode }) => {
       const leftWidth  = mode === 'calc'
         ? `calc(50% + ${point}px)`
@@ -107,6 +124,7 @@ class ContentSplitter {
       });
     });
 
+    // Save the current percentage for persistence or future use
     this._savedPercent = percent;
   }
 
