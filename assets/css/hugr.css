@@ -3,7 +3,7 @@
 	Theme URI: https://northernmyths.phantom-draft.com/
 	Author: PD
 	Author URI: https://github.com/PhantomDraft
-	Version: 7.1
+	Version: 7.2
 */
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,700&family=Ruslan+Display&display=swap');
 
@@ -156,10 +156,14 @@ html.loading {
   max-width: 80%
 }
 .info-button {
-  cursor: pointer;
-  font-size: 1em;
+	cursor: pointer;
+	color: #fff;
+	font-size: 1em;
+	font-family: 'Deutsch Gothic';
+	text-align: right;
 	border: none;
-	background: #fff;
+	border-radius: 25px;
+	background-color: rgba(56, 56, 56, .4);
   padding: 0.5em 1em
 }
 
@@ -381,7 +385,8 @@ html.loading {
 	display: inline-block
 }
 
-.logo__images { /* Wrapper */
+/* Wrapper */
+.logo__images {
 	overflow: hidden;
 	height: 50vh;
 	width: 100%;
