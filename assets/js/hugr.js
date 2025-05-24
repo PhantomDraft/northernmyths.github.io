@@ -2,7 +2,7 @@
 class ContentSplitter {
   constructor() {
     this.point = 0;
-    this.btn   = document.querySelector('.manager__js-btn');
+    this.btn = document.querySelector('.manager__js-btn');
     this.hammer = new Hammer(this.btn);
 
     this.menuButtons = Array.from(
@@ -122,57 +122,64 @@ class ContentSplitter {
   }
 }
 
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 window.addEventListener('load', () => {
   document.body.classList.add('loading');
 
-  fetch('/assets/data/loader.json')
-    .then(res => res.json())
-    .then(data => {
-      const idx = Math.floor(Math.random() * data.length);
-      const { image, text } = data[idx];
-      const loader = document.getElementById('loaderOverlay');
+  Promise.all([
+    fetch('/assets/data/loader.json').then(res => res.json()),
+    wait(2000)
+  ])
+  .then(([data]) => {
+    const idx = Math.floor(Math.random() * data.length);
+    const { image, text } = data[idx];
+    const loader = document.getElementById('loaderOverlay');
 
-      loader.querySelector('.loader-image').style.backgroundImage = `url(${image})`;
-      loader.querySelector('.loader-text').textContent = text;
+    loader.querySelector('.loader-image')
+          .style.backgroundImage = `url(${image})`;
+    loader.querySelector('.loader-text').textContent = text;
 
-      const spinner = loader.querySelector('.loader-spinner');
-      if (spinner) {
-        spinner.style.display = 'none';
-      }
+    const spinner = loader.querySelector('.loader-spinner');
+    if (spinner) {
+      spinner.style.display = 'none';
+    }
 
-      loader.classList.remove('hidden');
+    loader.classList.remove('hidden');
 
-      const continueBtn = document.createElement('button');
-      continueBtn.id = 'loaderContinue';
-      continueBtn.className = 'info-button';
-      continueBtn.textContent = 'Continue';
-      loader.appendChild(continueBtn);
+    const continueBtn = document.createElement('button');
+    continueBtn.id = 'loaderContinue';
+    continueBtn.className = 'info-button';
+    continueBtn.textContent = 'Continue';
+    loader.appendChild(continueBtn);
 
-      continueBtn.addEventListener('click', () => {
-        loader.classList.add('hidden');
-        loader.addEventListener('transitionend', () => {
-          document.body.classList.remove('loading');
+    continueBtn.addEventListener('click', () => {
+      loader.classList.add('hidden');
+      loader.addEventListener('transitionend', () => {
+        document.body.classList.remove('loading');
 
-          const infoOverlay = document.getElementById('infoOverlay');
-          if (!localStorage.getItem('infoDismissed')) {
-            infoOverlay.classList.remove('hidden');
-            document.getElementById('infoOk').addEventListener('click', () => {
-              localStorage.setItem('infoDismissed', 'true');
-              infoOverlay.classList.add('hidden');
-            });
-          }
+        const infoOverlay = document.getElementById('infoOverlay');
+        if (!localStorage.getItem('infoDismissed')) {
+          infoOverlay.classList.remove('hidden');
+          document.getElementById('infoOk').addEventListener('click', () => {
+            localStorage.setItem('infoDismissed', 'true');
+            infoOverlay.classList.add('hidden');
+          });
+        }
 
-          const splitter = new ContentSplitter();
-          splitter.animateToSavedPercent();
-        }, { once: true });
-      });
-    })
-    .catch(() => {
-      const loader = document.getElementById('loaderOverlay');
-      const spinner = loader.querySelector('.loader-spinner');
-      if (spinner) {
-        spinner.style.display = 'none';
-      }
-      loader.classList.remove('hidden');
+        const splitter = new ContentSplitter();
+        splitter.animateToSavedPercent();
+      }, { once: true });
     });
+  })
+  .catch(() => {
+    const loader = document.getElementById('loaderOverlay');
+    const spinner = loader.querySelector('.loader-spinner');
+    if (spinner) {
+      spinner.style.display = 'none';
+    }
+    loader.classList.remove('hidden');
+  });
 });
