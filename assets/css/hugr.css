@@ -3,7 +3,7 @@
 	Theme URI: https://northernmyths.phantom-draft.com/
 	Author: PD
 	Author URI: https://github.com/PhantomDraft
-	Version: 6.8
+	Version: 7.1
 */
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,700&family=Ruslan+Display&display=swap');
 
@@ -381,26 +381,33 @@ html.loading {
 	display: inline-block
 }
 
-/* Unified halves for logo and menu-icon */
-.slider-half {
-  float: left;
-  overflow: hidden;
-  width: 50%;
-  position: relative;
-  height: 100%;
-}
-.slider-half.slider-right {
-  float: right;
+.logo__images { /* Wrapper */
+	overflow: hidden;
+	height: 50vh;
+	width: 100%;
+  position: relative
 }
 
-.slider-half img {
-  position: absolute;
-  top: 0;
-  width: 200%;
-  height: auto;
+.logo__images__left {
+	overflow: hidden;
+	height: 100%;
+	width: 50%;
+  float: left
 }
-.slider-half.slider-right img {
-  left: -100%;
+
+.logo__images__right {
+	overflow: hidden;
+	height: 100%;
+	width: 50%;
+    float: right
+}
+
+.logo__image {
+	transform: translateX(-50%);
+	left: 50%;
+	top: 0;
+	height: 100%;
+  position: absolute
 }
 
 /* Main
