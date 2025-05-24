@@ -122,7 +122,7 @@ class ContentSplitter {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
   document.body.classList.add('loading');
 
   fetch('/assets/data/loader.json')
@@ -131,11 +131,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const idx = Math.floor(Math.random() * data.length);
       const { image, text } = data[idx];
       const loader = document.getElementById('loaderOverlay');
+
       loader.querySelector('.loader-image').style.backgroundImage = `url(${image})`;
       loader.querySelector('.loader-text').textContent = text;
+
+      const spinner = loader.querySelector('.loader-spinner');
+      if (spinner) {
+        spinner.style.display = 'none';
+      }
+
       loader.classList.remove('hidden');
 
-      // add Continue button
       const continueBtn = document.createElement('button');
       continueBtn.id = 'loaderContinue';
       continueBtn.className = 'info-button';
@@ -147,7 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loader.addEventListener('transitionend', () => {
           document.body.classList.remove('loading');
 
-          // Info-overlay
           const infoOverlay = document.getElementById('infoOverlay');
           if (!localStorage.getItem('infoDismissed')) {
             infoOverlay.classList.remove('hidden');
@@ -157,7 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
           }
 
-          // Initialize slider and restore state
           const splitter = new ContentSplitter();
           splitter.animateToSavedPercent();
         }, { once: true });
@@ -165,6 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(() => {
       const loader = document.getElementById('loaderOverlay');
+      const spinner = loader.querySelector('.loader-spinner');
+      if (spinner) {
+        spinner.style.display = 'none';
+      }
       loader.classList.remove('hidden');
     });
 });
