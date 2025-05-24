@@ -3,7 +3,7 @@
 	Theme URI: https://northernmyths.phantom-draft.com/
 	Author: PD
 	Author URI: https://github.com/PhantomDraft
-	Version: 7.5
+	Version: 7.6
 */
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,700&family=Ruslan+Display&display=swap');
 
@@ -118,7 +118,12 @@ html.loading {
 }
 
 .loader-text:first-letter {
-	font-family: 'PT Serif', serif
+	color: red;
+	line-height: 1;
+	font-size: calc(1em * 4);
+	font-family: 'Deutsch Gothic', serif;
+	height: 100%;
+	display: inline-block
 }
 
 /* Spinner */
@@ -506,7 +511,12 @@ html.loading {
 }
 
 .line-wrap h2:first-letter {
-	color: red; font-family: 'Deutsch Gothic'
+	color: red;
+	line-height: 1;
+	font-size: calc(1em * 4);
+	font-family: 'Deutsch Gothic', serif;
+	height: 100%;
+	display: inline-block
 }
 
 @media (max-width: 1101px) {
