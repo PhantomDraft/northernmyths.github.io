@@ -3,7 +3,7 @@
 	Theme URI: https://northernmyths.phantom-draft.com/
 	Author: PD
 	Author URI: https://github.com/PhantomDraft
-	Version: 7.8
+	Version: 7.9
 */
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,700&family=Ruslan+Display&display=swap');
 
@@ -163,10 +163,6 @@ html.loading {
 	border-radius: 25px;
 	background-color: rgba(56, 56, 56, .4);
   padding: 0.5em 1em
-}
-
-.manager {
-  z-index: 1001
 }
 
 /* Cover
@@ -414,7 +410,16 @@ html.loading {
   position: absolute
 }
 
-/* Main
+/* Content
+ */
+.content {
+	overflow: hidden;
+	box-sizing: border-box;
+	position: relative;
+	z-index: 3
+}
+
+/* content__left & content__right
  */
 .content__left {
 	overflow-x: hidden;
@@ -497,18 +502,24 @@ html.loading {
     margin: 3vh 0
 }
 
+.line-wrap h1,
 .line-wrap h2,
+.line-wrap h3,
 .line-wrap p:not(.info) {
 	font-weight: bold; font-family: 'PT Serif', serif
 }
 
-.line-wrap h2:first-letter {
+.line-wrap h1:first-letter,
+.line-wrap h2:first-letter,
+.line-wrap h3:first-letter {
 	color: red;
 	font-family: 'Deutsch Gothic', serif
 }
 
 @media (max-width: 1101px) {
-	.line-wrap h2 {
+	.line-wrap h1,
+	.line-wrap h2,
+	.line-wrap h3 {
 		font-size: 4vh
 	}
 
@@ -518,7 +529,9 @@ html.loading {
 }
 
 @media (min-width: 1100px) {
-	.line-wrap h2 {
+	.line-wrap h1,
+	.line-wrap h2,
+	.line-wrap h3 {
 		font-size: 6vh
 	}
 
@@ -535,19 +548,38 @@ html.loading {
 	margin: 2vh 0
 }
 
-/* Cont
- */
-.content {
-	overflow: hidden;
-	box-sizing: border-box;
-	position: relative;
-	z-index: 3
-}
-
 .content img {
 	border-radius: 12px
 }
 
+.content ul,
+.content ol,
+.content .atcScreen {
+  line-height: 200%;
+  font-size: 110%;
+  font-style: italic;
+  font-family: 'PT Serif', serif;
+}
+
+.content ul,
+.content ol {
+  padding: 0 10%;
+}
+
+.content .atcScreen {
+  margin: 30px auto;
+  width: 80%;
+}
+
+.content .atcScreen + .atcScreen {
+  margin-top: 60px;
+}
+
+.content .atcScreen p {
+  margin: 4vh 0 0;
+}
+
+/* Page */
 .content__page {
 	hyphens: auto;
 	-ms-hyphens: auto;
