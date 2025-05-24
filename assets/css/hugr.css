@@ -381,57 +381,26 @@ html.loading {
 	display: inline-block
 }
 
-.logo_menu__left,
-.logo_menu__right {
+/* Unified halves for logo and menu-icon */
+.slider-half {
   float: left;
   overflow: hidden;
   width: 50%;
   position: relative;
+  height: 100%;
 }
-
-.logo_menu__right {
+.slider-half.slider-right {
   float: right;
 }
 
-.logo_menu__left img,
-.logo_menu__right img {
+.slider-half img {
   position: absolute;
   top: 0;
   width: 200%;
   height: auto;
 }
-
-.logo_menu__right img {
+.slider-half.slider-right img {
   left: -100%;
-}
-
-.logo__images {
-	overflow: hidden;
-	height: 50vh;
-	width: 100%;
-  position: relative
-}
-
-.logo__images__left {
-	overflow: hidden;
-	height: 100%;
-	width: 50%;
-  float: left
-}
-
-.logo__images__right {
-	overflow: hidden;
-	height: 100%;
-	width: 50%;
-    float: right
-}
-
-.logo__image {
-	transform: translateX(-50%);
-	left: 50%;
-	top: 0;
-	height: 100%;
-  position: absolute
 }
 
 /* Main

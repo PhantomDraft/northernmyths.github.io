@@ -1,41 +1,49 @@
 // hugr.js ➔ ES6 OOP, Vanilla JS
+
 class ContentSplitter {
   constructor() {
     this.point = 0;
     this.btn   = document.querySelector('.manager__js-btn');
     this.hammer = new Hammer(this.btn);
 
-    // cache menu buttons and menu element
+    // cache menu toggle buttons and the menu element
     this.menuButtons = Array.from(
       document.querySelectorAll('.logo_menu, .main__menu--close')
     );
     this.menu = document.querySelector('.main__menu');
 
-    // define all three target‐pairs and their mode
-    // mode 'calc' uses calc(50%±point) for content
-    // mode 'percent' uses percent% widths for logo & menu
+    // define two groups of slider targets:
+    //  • content uses calc(50%±point)
+    //  • everything else (logo + menu-icon) uses percent%
     this.sliderTargets = [
-      { leftSelector: '.content__left',       rightSelector: '.content__right',      mode: 'calc'    },
-      { leftSelector: '.logo__images__left',  rightSelector: '.logo__images__right', mode: 'percent' },
-      { leftSelector: '.logo_menu__left',     rightSelector: '.logo_menu__right',    mode: 'percent' }
+      {
+        leftSelector:  '.content__left',
+        rightSelector: '.content__right',
+        mode:          'calc'
+      },
+      {
+        leftSelector:  '.slider-half.slider-left',
+        rightSelector: '.slider-half.slider-right',
+        mode:          'percent'
+      }
     ];
 
     this.init();
   }
 
   init() {
-    // on load or resize: recalc heights & restore saved position
-    window.addEventListener('load',  () => { this.updateHeight(); this.animateToSavedPercent(); });
-    window.addEventListener('resize',() => { this.updateHeight(); this.animateToSavedPercent(); });
+    // on load or resize: recalc heights and restore saved position
+    window.addEventListener('load',   () => { this.updateHeight(); this.animateToSavedPercent(); });
+    window.addEventListener('resize', () => { this.updateHeight(); this.animateToSavedPercent(); });
 
-    // on pan: compute point, move splitter, save percent
+    // on slider drag: compute point, move splitter, save percent
     this.hammer.on('pan', ev => {
       this.point = ev.center.x - window.innerWidth / 2 + 9;
       this.move(this.point);
       this.saveCurrentPercent();
     });
 
-    // menu toggle
+    // menu toggle functionality
     this.menuButtons.forEach(btn => {
       btn.addEventListener('click', e => {
         e.preventDefault();
@@ -44,7 +52,7 @@ class ContentSplitter {
       });
     });
 
-    // immediately apply in case load/resize didn't fire
+    // immediately apply saved state in case load/resize didn't fire
     this.updateHeight();
     this.animateToSavedPercent();
   }
@@ -55,7 +63,7 @@ class ContentSplitter {
   }
 
   updateHeight() {
-    // equalize first <h2> heights
+    // equalize first <h2> heights in content columns
     const leftCol  = document.querySelector('.content__left');
     const rightCol = document.querySelector('.content__right');
     if (!leftCol || !rightCol) return;
@@ -76,7 +84,7 @@ class ContentSplitter {
   }
 
   move(point) {
-    // compute bounds and percent
+    // calculate bounds and percentage
     const vw  = window.innerWidth / 100;
     const max = (100 * vw - 29.4 * vw - 85) / 2;
     if (window.innerWidth >= 750) {
@@ -85,7 +93,7 @@ class ContentSplitter {
     const total   = -point * 2;
     const percent = Math.round((100 * point) / window.innerWidth);
 
-    // update hints
+    // update numeric hints
     document.querySelector('.hints__right span').textContent = 50 - percent;
     document.querySelector('.hints__left span').textContent  = 50 + percent;
 
@@ -98,7 +106,7 @@ class ContentSplitter {
     document.querySelector('.manager__active').style.width = `calc(50% + ${point}px)`;
     document.querySelector('.manager__divider').style.left = `calc(50% + ${point}px)`;
 
-    // unified width update for all three areas
+    // unified update for all slider targets
     this.sliderTargets.forEach(({ leftSelector, rightSelector, mode }) => {
       const leftWidth  = mode === 'calc'
         ? `calc(50% + ${point}px)`
@@ -149,22 +157,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// 2) On window load: hide loader, show info, then init splitter
+// 2) On window load: hide loader, show info-overlay, then init splitter
 window.addEventListener('load', () => {
   setTimeout(() => {
     const loader = document.getElementById('loaderOverlay');
-    loader.classList.add('hidden'); // fade out
+    loader.classList.add('hidden');
     loader.addEventListener('transitionend', () => {
       document.body.classList.remove('loading');
-      const info = document.getElementById('infoOverlay');
+      const infoOverlay = document.getElementById('infoOverlay');
       if (!localStorage.getItem('infoDismissed')) {
-        info.classList.remove('hidden');
+        infoOverlay.classList.remove('hidden');
         document.getElementById('infoOk').addEventListener('click', () => {
           localStorage.setItem('infoDismissed', 'true');
-          info.classList.add('hidden');
+          infoOverlay.classList.add('hidden');
         });
       }
-      // initialize splitter and restore position
       new ContentSplitter().animateToSavedPercent();
     }, { once: true });
   }, 5000);
